@@ -10,8 +10,10 @@
         body {
             font-family: 'Noto Sans JP', sans-serif;
         }
-        .hidden-slide {
-            display: none;
+        /* スライドコンテナ（横並びの土台） */
+        #slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
         }
         .slide-content h3 {
             font-size: 1.25rem;
@@ -32,145 +34,101 @@
         
         /* スライド統一サイズ */
         .slide {
-            height: 650px;
-            overflow-y: auto;
+            height: 600px; /* PCで見やすいように高さを調整 */
+            overflow-y: auto; /* スライド内のコンテンツが多い場合は、スライド内をスクロール */
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
+            align-items: stretch;
+            text-align: left;
+            padding: 2rem;
+            flex: 1 0 100%; /* 各スライドがコンテナの幅全体を占めるように設定 */
+            box-sizing: border-box;
         }
         
-        /* アニメーション */
-        .slide {
-            animation: slideIn 0.5s ease-out;
+        /* コンテンツサイズ調整 */
+        .slide h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
         }
         
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        .slide h3 {
+            font-size: 1.1rem;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
         }
         
-        .fade-in {
-            animation: fadeIn 0.8s ease-in;
+        .slide p {
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
         }
         
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .slide ol, .slide ul {
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
         }
         
-        .bounce-in {
-            animation: bounceIn 0.6s ease-out;
+        .slide table {
+            font-size: 0.85rem;
         }
         
-        @keyframes bounceIn {
-            0% {
-                opacity: 0;
-                transform: scale(0.3);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1.05);
-            }
-            70% {
-                transform: scale(0.9);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-        
-        /* ホバーエフェクト */
-        .slide-content h2:hover {
-            transform: translateX(10px);
-            transition: transform 0.3s ease;
-        }
-        
-        .tool-link {
-            transition: all 0.3s ease;
-        }
-        
-        .tool-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
-        }
-        
-        /* スクロールバーカスタマイズ */
-        .slide::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        .slide::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
-        }
-        
-        .slide::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 4px;
-        }
-        
-        .slide::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8;
-        }
-        
-        /* ナビゲーションボタンのアニメーション */
-        .nav-btn {
-            transition: all 0.3s ease;
-        }
-        
-        .nav-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-        
-        /* カウンターのアニメーション */
-        #slide-counter {
-            transition: all 0.3s ease;
+        .slide pre {
+            font-size: 0.8rem;
+            max-height: 200px;
+            overflow-y: auto;
         }
         
         /* レスポンシブ調整 */
         @media (max-width: 768px) {
             .slide {
                 height: 550px;
+                padding: 1.5rem;
+            }
+            .slide h2 {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .slide {
+                padding: 1rem;
+            }
+             .slide h2 {
+                font-size: 1.2rem;
+            }
+            body {
+                padding: 0;
+            }
+            #slide-container {
+                padding: 0.5rem;
             }
         }
     </style>
 </head>
 <body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen p-4 sm:p-6 md:p-8">
 
-    <div id="slide-container" class="w-full max-w-5xl mx-auto">
-        <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-8 fade-in">【AI活用】<br class="sm:hidden">会議の議事録作成 効率化マニュアル</h1>
+    <!-- スライド全体を囲むコンテナ。overflow-hiddenで横にはみ出したスライドを隠す -->
+    <div id="slide-container" class="w-full max-w-5xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
+        <h1 class="text-2xl md:text-3xl font-bold text-center text-gray-800 my-6 px-4">【AI活用】<br class="sm:hidden">会議の議事録作成 効率化マニュアル</h1>
 
+        <!-- このdivが左右に動くことでスライドが切り替わる -->
         <div id="slides">
             <!-- Slide 1: Two Plans Comparison -->
-            <div class="slide bg-white p-6 sm:p-8 md:p-12 rounded-2xl shadow-lg border border-gray-200 slide-content">
+            <div class="slide slide-content">
                 <h2 class="text-2xl md:text-3xl font-bold text-gray-800 border-b-4 border-gray-700 pb-3 mb-6">ご提案する2つの効率化プラン</h2>
                 <p class="text-lg mb-6">日電工業株式会社様のニーズに合わせて選択可能な2つのプランをご提案します。</p>
                 <div class="grid md:grid-cols-2 gap-6 mt-6 mb-8">
-                    <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-lg bounce-in">
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-lg">
                         <h3 class="text-blue-800 border-blue-500 mt-0">YouTube文字起こしプラン</h3>
                         <p>YouTubeとChrome拡張機能を活用し、無料で手軽に始められるプランです。まずはお試しで導入したい場合に最適です。</p>
                     </div>
-                    <div class="bg-teal-50 border-l-4 border-teal-500 p-6 rounded-lg bounce-in">
+                    <div class="bg-teal-50 border-l-4 border-teal-500 p-6 rounded-lg">
                         <h3 class="text-teal-800 border-teal-500 mt-0">Gladia文字起こしプラン</h3>
                         <p>専門のAIサービス「Gladia」を活用し、高い精度を実現するプランです。正確な議事録が求められる場合に適しています。</p>
                     </div>
                 </div>
                 <h3 class="border-gray-500">プラン比較表</h3>
-                <div class="overflow-x-auto mb-6">
+                <div class="mb-6">
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="bg-gray-100">
@@ -197,7 +155,7 @@
             </div>
 
             <!-- Method 1: Start -->
-            <div class="slide hidden-slide bg-white p-6 sm:p-8 md:p-12 rounded-2xl shadow-lg border border-gray-200 slide-content">
+            <div class="slide slide-content">
                 <h2 class="text-2xl md:text-3xl font-bold text-blue-800 border-b-4 border-blue-700 pb-3 mb-6">YouTube文字起こしプラン概要</h2>
                 <h3 class="border-blue-500">使用ツール</h3>
                 <ol class="list-decimal list-inside space-y-2">
@@ -214,37 +172,37 @@
                 </ol>
             </div>
             
-            <div class="slide hidden-slide bg-white p-6 sm:p-8 md:p-12 rounded-2xl shadow-lg border border-gray-200 slide-content">
+            <div class="slide slide-content">
                  <h2 class="text-2xl md:text-3xl font-bold text-blue-800 border-b-4 border-blue-700 pb-3 mb-6">YouTube文字起こしプラン - 手順詳細①（動画アップロード）</h2>
                  <p class="text-lg mb-6">YouTubeへ動画をアップロードし、セキュリティ設定を行います。</p>
                  
                  <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-lg mb-6">
-                    <h3 class="text-blue-800 border-blue-500 mt-0 mb-4">YouTubeアップロード手順</h3>
-                    <ol class="list-decimal list-inside space-y-3 text-gray-800">
-                        <li><a href="https://studio.youtube.com" target="_blank" class="tool-link">YouTube Studio</a>にログインする</li>
-                        <li>「作成」→「動画をアップロード」をクリック</li>
-                        <li>会議の録画ファイルをドラッグ&ドロップまたは選択</li>
-                        <li>動画のタイトルを入力（例：「2024年1月定例会議」）</li>
-                        <li>「詳細」タブで説明文を入力（任意）</li>
-                        <li>「公開設定」タブに移動</li>
-                    </ol>
+                     <h3 class="text-blue-800 border-blue-500 mt-0 mb-4">YouTubeアップロード手順</h3>
+                     <ol class="list-decimal list-inside space-y-3 text-gray-800">
+                         <li><a href="https://studio.youtube.com" target="_blank" class="tool-link">YouTube Studio</a>にログインする</li>
+                         <li>「作成」→「動画をアップロード」をクリック</li>
+                         <li>会議の録画ファイルをドラッグ&ドロップまたは選択</li>
+                         <li>動画のタイトルを入力（例：「2024年1月定例会議」）</li>
+                         <li>「詳細」タブで説明文を入力（任意）</li>
+                         <li>「公開設定」タブに移動</li>
+                     </ol>
                  </div>
 
                  <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-r-lg mt-6">
-                    <p class="font-bold">【最重要セキュリティ設定】限定公開</p>
-                    <p>動画のURLを知る関係者のみが視聴できる設定です。第三者による意図しない閲覧を防ぐため、必ずこの設定を行ってください。</p>
-                    <div class="mt-4 bg-white p-4 rounded border border-red-300">
-                        <p class="font-semibold text-red-800">設定手順：</p>
-                        <ol class="list-decimal list-inside mt-2 space-y-1">
-                            <li>「公開設定」タブで「限定公開」を選択</li>
-                            <li>「保存」ボタンをクリック</li>
-                            <li>動画のURLをコピーして保存（後で使用）</li>
-                        </ol>
-                    </div>
-                </div>
+                     <p class="font-bold">【最重要セキュリティ設定】限定公開</p>
+                     <p>動画のURLを知る関係者のみが視聴できる設定です。第三者による意図しない閲覧を防ぐため、必ずこの設定を行ってください。</p>
+                     <div class="mt-4 bg-white p-4 rounded border border-red-300">
+                         <p class="font-semibold text-red-800">設定手順：</p>
+                         <ol class="list-decimal list-inside mt-2 space-y-1">
+                             <li>「公開設定」タブで「限定公開」を選択</li>
+                             <li>「保存」ボタンをクリック</li>
+                             <li>動画のURLをコピーして保存（後で使用）</li>
+                         </ol>
+                     </div>
+                 </div>
             </div>
 
-            <div class="slide hidden-slide bg-white p-6 sm:p-8 md:p-12 rounded-2xl shadow-lg border border-gray-200 slide-content">
+            <div class="slide slide-content">
                 <h2 class="text-2xl md:text-3xl font-bold text-blue-800 border-b-4 border-blue-700 pb-3 mb-6">YouTube文字起こしプラン - 手順詳細②（文字起こし～要約）</h2>
                 <p class="text-lg mb-6">拡張機能で文字起こしをコピーし、Geminiで要約します。</p>
                 
@@ -262,22 +220,31 @@
                 </div>
 
                 <h3 class="border-blue-500">Geminiへのプロンプトテンプレート（依頼文）</h3>
-                <pre class="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto"><code># 依頼
-以下の会議の文字起こしを、要約してください。
-
-# 要約形式
-・決定事項
-・今後のタスク（ToDoリスト）
-
-上記の2項目を、箇条書きで明確に整理してください。
-
-# 会議の文字起こし
-（ここにコピーしたテキストを貼り付け）</code></pre>
+                <div class="bg-gray-100 border-2 border-gray-300 p-6 rounded-lg">
+                    <div class="space-y-4 text-gray-800">
+                        <div>
+                            <h4 class="font-bold text-lg text-blue-700 mb-2"># 依頼</h4>
+                            <p class="text-base">以下の会議の文字起こしを、要約してください。</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg text-blue-700 mb-2"># 要約形式</h4>
+                            <ul class="list-disc list-inside space-y-1 text-base">
+                                <li>決定事項</li>
+                                <li>今後のタスク（ToDoリスト）</li>
+                            </ul>
+                            <p class="text-base mt-2">上記の2項目を、箇条書きで明確に整理してください。</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg text-blue-700 mb-2"># 会議の文字起こし</h4>
+                            <p class="text-base italic text-gray-600">（ここにコピーしたテキストを貼り付け）</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- Method 1: End -->
 
             <!-- Method 2: Start -->
-            <div class="slide hidden-slide bg-white p-6 sm:p-8 md:p-12 rounded-2xl shadow-lg border border-gray-200 slide-content">
+            <div class="slide slide-content">
                 <h2 class="text-2xl md:text-3xl font-bold text-teal-800 border-b-4 border-teal-700 pb-3 mb-6">Gladia文字起こしプラン概要</h2>
                 <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-r-lg mb-6">
                     <p class="font-bold text-yellow-800">【重要】Gladiaは英語サイトです</p>
@@ -297,76 +264,151 @@
                 </ol>
             </div>
 
-            <div class="slide hidden-slide bg-white p-6 sm:p-8 md:p-12 rounded-2xl shadow-lg border border-gray-200 slide-content">
+            <div class="slide slide-content">
                 <h2 class="text-2xl md:text-3xl font-bold text-teal-800 border-b-4 border-teal-700 pb-3 mb-6">Gladia文字起こしプラン - 手順詳細①（Gladiaの操作）</h2>
                  <p class="text-lg mb-6">Gladiaで「話者分離」を有効にし、高精度な文字起こしを行います。</p>
                 
-                <div class="bg-teal-50 border-l-4 border-teal-500 p-6 rounded-lg mb-6">
-                    <h3 class="text-teal-800 border-teal-500 mt-0 mb-4">Gladia操作手順</h3>
-                    <ol class="list-decimal list-inside space-y-3 text-gray-800">
-                        <li><a href="https://app.gladia.io" target="_blank" class="tool-link">Gladia</a>にログインする</li>
-                        <li>「New Transcription」をクリック</li>
-                        <li>会議の音声・動画ファイルをアップロード</li>
-                        <li>「Speaker diarization」のチェックボックスを有効にする</li>
-                        <li>「Transcribe」ボタンをクリック</li>
-                        <li>処理完了後、「Copy」ボタンでテキストをコピー</li>
-                    </ol>
-                </div>
+                 <div class="bg-teal-50 border-l-4 border-teal-500 p-6 rounded-lg mb-6">
+                     <h3 class="text-teal-800 border-teal-500 mt-0 mb-4">Gladia操作手順</h3>
+                     <ol class="list-decimal list-inside space-y-3 text-gray-800">
+                         <li><a href="https://app.gladia.io" target="_blank" class="tool-link">Gladia</a>にログインする</li>
+                         <li>「New Transcription」をクリック</li>
+                         <li>会議の音声・動画ファイルをアップロード</li>
+                         <li>「Speaker diarization」のチェックボックスを有効にする</li>
+                         <li>「Transcribe」ボタンをクリック</li>
+                         <li>処理完了後、「Copy」ボタンでテキストをコピー</li>
+                     </ol>
+                 </div>
 
-                <div class="bg-teal-50 border-l-4 border-teal-500 text-teal-700 p-4 rounded-r-lg mt-6">
-                    <p class="font-bold">【ポイント】話者分離（Speaker diarization）</p>
-                    <p>AIが発言者を自動で区別し、「Speaker 1」「Speaker 2」のように発言を整理する機能です。これにより、議事録の可読性と正確性が飛躍的に向上します。</p>
-                </div>
+                 <div class="bg-teal-50 border-l-4 border-teal-500 text-teal-700 p-4 rounded-r-lg mt-6">
+                     <p class="font-bold">【ポイント】話者分離（Speaker diarization）</p>
+                     <p>AIが発言者を自動で区別し、「Speaker 1」「Speaker 2」のように発言を整理する機能です。これにより、議事録の可読性と正確性が飛躍的に向上します。</p>
+                 </div>
             </div>
 
-            <div class="slide hidden-slide bg-white p-6 sm:p-8 md:p-12 rounded-2xl shadow-lg border border-gray-200 slide-content">
-                <h2 class="text-2xl md:text-3xl font-bold text-teal-800 border-b-4 border-teal-700 pb-3 mb-6">Gladia文字起こしプラン - 手順詳細②（Geminiへの指示のコツ）</h2>
-                <p class="text-lg mb-6">AIから理想的な出力を得るための、最も効果的なテクニックをご紹介します。</p>
+            <div class="slide slide-content">
+                <h2 class="text-2xl md:text-3xl font-bold text-teal-800 border-b-4 border-teal-700 pb-3 mb-6">Gladia文字起こしプラン - 手順詳細②（Gemini活用のコツと実践手順）</h2>
+                <p class="text-lg mb-6">AIから理想的な出力を得るためのテクニックと、具体的な実践手順をご紹介します。</p>
                 
-                <h3 class="border-teal-500">「Few-shot Prompting」：出力例の提示</h3>
-                <p class="text-lg mb-4">AIに単に「要約して」と依頼するだけでなく、<strong class="text-red-600">「こちらが望む要約のフォーマット（形式）の見本」</strong>を一緒に提示する手法です。</p>
-                <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-r-lg">
-                    <p class="font-bold">なぜ効果的なのか？</p>
-                    <p>AIは提示された「お手本」を参考にすることで、依頼者の意図をより正確に理解し、期待に沿った形式と内容で回答を生成します。これにより、手戻りや修正の手間が大幅に削減されます。</p>
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-teal-50 border-l-4 border-teal-500 p-6 rounded-lg">
+                        <h3 class="text-teal-800 border-teal-500 mt-0 mb-4">【コツ】Few-shot Prompting</h3>
+                        <p class="text-base mb-3">AIに単に「要約して」と依頼するだけでなく、<strong class="text-red-600">「望む出力形式の見本」</strong>を一緒に提示する手法です。</p>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-3 rounded-r-lg">
+                            <p class="font-bold text-sm">効果</p>
+                            <p class="text-sm">AIが依頼者の意図を正確に理解し、期待に沿った形式で回答を生成。手戻りや修正の手間を大幅削減。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-lg">
+                        <h3 class="text-blue-800 border-blue-500 mt-0 mb-4">【実践手順】</h3>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-800 text-sm">
+                            <li>Gladiaで「Copy」ボタンをクリック</li>
+                            <li><a href="https://gemini.google.com" target="_blank" class="tool-link">Gemini</a>を開く</li>
+                            <li>下記テンプレートをコピー&ペースト</li>
+                            <li>「# 会議の文字起こし」部分を置き換え</li>
+                            <li>送信して結果を確認</li>
+                        </ol>
+                        <div class="mt-4 bg-green-100 p-3 rounded border border-green-300">
+                            <p class="text-green-800 text-sm"><strong>推奨：</strong>会議ごとに新しいチャットを作成すると、履歴が整理しやすくなります。</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <div class="slide hidden-slide bg-white p-6 sm:p-8 md:p-12 rounded-2xl shadow-lg border border-gray-200 slide-content">
-                <h2 class="text-2xl md:text-3xl font-bold text-teal-800 border-b-4 border-teal-700 pb-3 mb-6">Gladia文字起こしプラン - 手順詳細③（プロンプトテンプレート）</h2>
-                <p class="text-lg mb-6">前述のポイントを踏まえた、具体的な指示文（プロンプト）です。</p>
                 
-                <h3 class="border-teal-500">【コピーして使用】プロンプトテンプレート（高精度版）</h3>
-                <pre class="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto"><code># 依頼
-あなたは優秀なアシスタントです。以下の会議議事録を読み、指定の出力形式に従って要約を作成してください。
-
-# 出力形式（お手本）
-## 1. 会議サマリー
-（ここに会議全体の簡潔な要約を記述）
-
-## 2. 決定事項
-・（決定事項1）
-・（決定事項2）
-
-## 3. ToDoリスト
-| タスク内容 | 担当者 | 期限 |
-|:---|:---|:---|
-| （タスク1） | （例：田中様） | （例：YYYY/MM/DD） |
-| （タスク2） | （例：鈴木様） | （例：YYYY/MM/DD） |
-
----
-# 会議の文字起こし
-（ここにGladiaでコピーしたテキストを貼り付け）</code></pre>
+                <div class="bg-teal-50 border-l-4 border-teal-500 p-6 rounded-lg">
+                    <h3 class="text-teal-800 border-teal-500 mt-0 mb-4">【コピー用】プロンプトテンプレート（高精度版）</h3>
+                    <div class="bg-white border border-teal-300 rounded p-4">
+                        <div class="space-y-3 text-sm">
+                            <div>
+                                <h4 class="font-bold text-teal-700"># 依頼</h4>
+                                <p>あなたは優秀なアシスタントです。以下の会議議事録を読み、指定の出力形式に従って要約を作成してください。</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-teal-700"># 出力形式（お手本）</h4>
+                                <div class="space-y-2">
+                                    <div>
+                                        <h5 class="font-semibold text-teal-600">## 1. 会議サマリー</h5>
+                                        <p class="italic text-gray-600">（ここに会議全体の簡潔な要約を記述）</p>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-semibold text-teal-600">## 2. 決定事項</h5>
+                                        <ul class="list-disc list-inside">
+                                            <li>（決定事項1）</li>
+                                            <li>（決定事項2）</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-semibold text-teal-600">## 3. ToDoリスト</h5>
+                                        <div class="bg-gray-50 border border-gray-300 rounded p-2">
+                                            <table class="w-full text-xs">
+                                                <thead>
+                                                    <tr class="border-b border-gray-300">
+                                                        <th class="text-left p-1">タスク内容</th>
+                                                        <th class="text-left p-1">担当者</th>
+                                                        <th class="text-left p-1">期限</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="border-b border-gray-200">
+                                                        <td class="p-1">（タスク1）</td>
+                                                        <td class="p-1">（例：田中様）</td>
+                                                        <td class="p-1">（例：YYYY/MM/DD）</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="p-1">（タスク2）</td>
+                                                        <td class="p-1">（例：鈴木様）</td>
+                                                        <td class="p-1">（例：YYYY/MM/DD）</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border-t border-gray-300 pt-3">
+                                <h4 class="font-bold text-teal-700"># 会議の文字起こし</h4>
+                                <p class="italic text-gray-600">（ここにGladiaでコピーしたテキストを貼り付け）</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-green-50 border-l-4 border-green-500 p-6 rounded-lg">
+                    <h3 class="text-green-800 border-green-500 mt-0 mb-4">【確認ポイント】</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <h4 class="font-bold text-green-700 mb-2">内容の確認</h4>
+                            <ul class="list-disc list-inside space-y-1 text-gray-800 text-sm">
+                                <li>会議サマリーが適切に要約されているか</li>
+                                <li>決定事項が漏れなく抽出されているか</li>
+                                <li>ToDoリストの担当者と期限が明確か</li>
+                                <li>専門用語や固有名詞が正確か</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-green-700 mb-2">調整方法</h4>
+                            <ul class="list-disc list-inside space-y-1 text-gray-800 text-sm">
+                                <li>不正確な部分があれば「修正してください」と指示</li>
+                                <li>不足があれば「追加してください」と指示</li>
+                                <li>形式を変更したい場合は「〜の形式で出力してください」と指示</li>
+                                <li>必要に応じて手動で修正・追加</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- Method 2: End -->
+            
+
         </div>
 
         <!-- Navigation -->
-        <div class="flex items-center justify-between mt-6">
-            <button id="prevBtn" class="nav-btn bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+        <div class="flex items-center justify-between p-6 bg-gray-50 border-t border-gray-200">
+            <button id="prevBtn" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed">
                 前のスライドへ
             </button>
             <span id="slide-counter" class="text-gray-600 font-semibold"></span>
-            <button id="nextBtn" class="nav-btn bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+            <button id="nextBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg">
                 次のスライドへ
             </button>
         </div>
@@ -374,6 +416,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const slidesContainer = document.getElementById('slides');
             const slides = document.querySelectorAll('.slide');
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
@@ -382,18 +425,10 @@
             const totalSlides = slides.length;
 
             function showSlide(index) {
-                slides.forEach((slide) => {
-                    slide.classList.add('hidden-slide');
-                });
-                if (slides[index]) {
-                    slides[index].classList.remove('hidden-slide');
-                    // スライド内の要素にアニメーションを追加
-                    const elements = slides[index].querySelectorAll('h2, h3, p, ol, ul, div, table, pre');
-                    elements.forEach((element, i) => {
-                        element.style.animationDelay = `${i * 0.1}s`;
-                        element.classList.add('fade-in');
-                    });
-                }
+                // スライドコンテナ全体を水平に動かす
+                slidesContainer.style.transform = `translateX(-${index * 100}%)`;
+                
+                currentSlide = index;
                 updateCounter();
                 updateButtons();
             }
@@ -403,8 +438,14 @@
             }
             
             function updateButtons() {
-                prevBtn.disabled = currentSlide === 0;
-                // 最後のスライドでは「次のスライドへ」ボタンを非表示
+                // 1ページ目では「前のスライド」ボタンを非表示
+                if (currentSlide === 0) {
+                    prevBtn.style.display = 'none';
+                } else {
+                    prevBtn.style.display = 'block';
+                }
+                
+                // 最後のページでは「次のスライド」ボタンを非表示
                 if (currentSlide === totalSlides - 1) {
                     nextBtn.style.display = 'none';
                 } else {
@@ -414,19 +455,18 @@
 
             nextBtn.addEventListener('click', () => {
                 if (currentSlide < totalSlides - 1) {
-                    currentSlide++;
-                    showSlide(currentSlide);
+                    showSlide(currentSlide + 1);
                 }
             });
 
             prevBtn.addEventListener('click', () => {
                 if (currentSlide > 0) {
-                    currentSlide--;
-                    showSlide(currentSlide);
+                    showSlide(currentSlide - 1);
                 }
             });
 
-            showSlide(currentSlide);
+            // 最初のスライドを初期表示
+            showSlide(0);
         });
     </script>
 </body>
