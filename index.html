@@ -29,12 +29,131 @@
         .tool-link:hover {
             color: #1D4ED8;
         }
+        
+        /* スライド統一サイズ */
+        .slide {
+            min-height: 600px;
+            max-height: 700px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* アニメーション */
+        .slide {
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .bounce-in {
+            animation: bounceIn 0.6s ease-out;
+        }
+        
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        /* ホバーエフェクト */
+        .slide-content h2:hover {
+            transform: translateX(10px);
+            transition: transform 0.3s ease;
+        }
+        
+        .tool-link {
+            transition: all 0.3s ease;
+        }
+        
+        .tool-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+        }
+        
+        /* スクロールバーカスタマイズ */
+        .slide::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .slide::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        .slide::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+        
+        .slide::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+        
+        /* ナビゲーションボタンのアニメーション */
+        .nav-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* カウンターのアニメーション */
+        #slide-counter {
+            transition: all 0.3s ease;
+        }
+        
+        /* レスポンシブ調整 */
+        @media (max-width: 768px) {
+            .slide {
+                min-height: 500px;
+                max-height: 600px;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen p-4 sm:p-6 md:p-8">
 
-    <div id="slide-container" class="w-full max-w-4xl mx-auto">
-        <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-8">【AI活用】<br class="sm:hidden">会議の議事録作成 効率化マニュアル</h1>
+    <div id="slide-container" class="w-full max-w-5xl mx-auto">
+        <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-8 fade-in">【AI活用】<br class="sm:hidden">会議の議事録作成 効率化マニュアル</h1>
 
         <div id="slides">
             <!-- Slide 1: Two Plans Comparison -->
@@ -42,11 +161,11 @@
                 <h2 class="text-2xl md:text-3xl font-bold text-gray-800 border-b-4 border-gray-700 pb-3 mb-6">ご提案する2つの効率化プラン</h2>
                 <p class="text-lg mb-6">日電工業株式会社様のニーズに合わせて選択可能な2つのプランをご提案します。</p>
                 <div class="grid md:grid-cols-2 gap-6 mt-6 mb-8">
-                    <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-lg">
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-lg bounce-in">
                         <h3 class="text-blue-800 border-blue-500 mt-0">YouTube文字起こしプラン</h3>
                         <p>YouTubeとChrome拡張機能を活用し、無料で手軽に始められるプランです。まずはお試しで導入したい場合に最適です。</p>
                     </div>
-                    <div class="bg-teal-50 border-l-4 border-teal-500 p-6 rounded-lg">
+                    <div class="bg-teal-50 border-l-4 border-teal-500 p-6 rounded-lg bounce-in">
                         <h3 class="text-teal-800 border-teal-500 mt-0">Gladia文字起こしプラン</h3>
                         <p>専門のAIサービス「Gladia」を活用し、高い精度を実現するプランです。正確な議事録が求められる場合に適しています。</p>
                     </div>
@@ -244,11 +363,11 @@
 
         <!-- Navigation -->
         <div class="flex items-center justify-between mt-6">
-            <button id="prevBtn" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+            <button id="prevBtn" class="nav-btn bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
                 前のスライドへ
             </button>
             <span id="slide-counter" class="text-gray-600 font-semibold"></span>
-            <button id="nextBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+            <button id="nextBtn" class="nav-btn bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
                 次のスライドへ
             </button>
         </div>
@@ -269,6 +388,12 @@
                 });
                 if (slides[index]) {
                     slides[index].classList.remove('hidden-slide');
+                    // スライド内の要素にアニメーションを追加
+                    const elements = slides[index].querySelectorAll('h2, h3, p, ol, ul, div, table, pre');
+                    elements.forEach((element, i) => {
+                        element.style.animationDelay = `${i * 0.1}s`;
+                        element.classList.add('fade-in');
+                    });
                 }
                 updateCounter();
                 updateButtons();
