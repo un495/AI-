@@ -32,11 +32,11 @@
         
         /* スライド統一サイズ */
         .slide {
-            min-height: 600px;
-            max-height: 700px;
+            height: 650px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
+            justify-content: flex-start;
         }
         
         /* アニメーション */
@@ -144,8 +144,7 @@
         /* レスポンシブ調整 */
         @media (max-width: 768px) {
             .slide {
-                min-height: 500px;
-                max-height: 600px;
+                height: 550px;
             }
         }
     </style>
